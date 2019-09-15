@@ -5,6 +5,10 @@ const router = require('./app/router')
 const cors = require('cors')
 const config = require('./config')
 const Websocket = require('ws')
+const fs = require('fs')
+
+if (!fs.existsSync('./wslog.txt')) 
+    fs.writeFileSync('./wslog.txt', "--- BEGIN WEBSOCKET LOG ---\n")
 
 let wss = new Websocket.Server({ server })
 
@@ -12,6 +16,7 @@ wss.on('connection', (ws) => {
     console.log('connection')
     ws.on('message', (message) => {
         console.log(message)
+        fs.appendFileSync('./wslog.txt', message + "\n")
     })
 })
 

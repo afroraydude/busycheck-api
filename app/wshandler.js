@@ -4,24 +4,22 @@ export default class WSHandler {
 
   processMessage(socket, message) {
     /**
-     * examples:
-     * {"type":"auth", "message": "jsonwebtoken"}
-     * {"type":"sendData", "message":"NumberOfThigns"}
+     * example of message
+     * {"token":"jsonwebtoken", count: 1}
      */
     let json = JSON.parse(message)
 
-    switch (json.type) {
-      case 'auth':
-        
-        break;
-    
-      default:
-        break;
-    }
+    this.handleAuthorization(json.token).then((res) => {
+      if (res) {
+        let data = json.count
+        let area = res.area
+      } // else do nothing
+      socket.terminate()
+    })
   }
 
-  handleAuthorization(socket, token) {
-    // if token works, do nothing
-    // else ws.terminate()
+  async handleAuthorization(token) {
+    // if token works, output parsed jsonwebtoken data
+    // else return false
   }
 }
