@@ -20,7 +20,7 @@ wss.on('connection', (ws) => {
     })
 })
 
-port = 9000
+port = config.port
 
 server.listen(config.port);
 
