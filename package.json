@@ -8,7 +8,8 @@
   "license": "Apache-2.0",
   "private": false,
   "scripts": {
-    "debug": "nodemon ./"
+    "debug": "nodemon ./",
+    "start-viewer": "export $(egrep -v '^#' .env | xargs) && redis-commander --redis-password $dbpass --redis-host busycheck.afroraydude.com"
   },
   "dependencies": {
     "cors": "^2.8.5",

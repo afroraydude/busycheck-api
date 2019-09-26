@@ -15,7 +15,7 @@ router.get('/about', (req, res) => res.json({version: "1.0.0-devel", serverName:
 
 router.get('/gentestdata', (req, res) => {
   RedisHandler.sendExampleData()
-  res.send('success')
+  res.json({status: 'success'})
 })
 
 router.get('/buildings/:building/:floor', (req, res) => {
@@ -29,6 +29,7 @@ router.get('/buildings', (req, res) => {
   let area = 'buildings'
   console.log(area)
   RedisHandler.getAreaRedis(area).then((result) =>{
+    console.log(result)
     res.json(result)
   })
 })
