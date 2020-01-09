@@ -6,6 +6,9 @@ const cors = require("cors");
 const config = require("./config");
 const Websocket = require("ws");
 const fs = require("fs");
+const ipc = require('node-ipc');
+
+const socketPath = '/tmp/ipc.sock';
 
 if (!fs.existsSync("./wslog.txt"))
   fs.writeFileSync("./wslog.txt", "--- BEGIN WEBSOCKET LOG ---\n");
@@ -36,6 +39,32 @@ app.use(router);
 app.use(function(req, res, next) {
     res.status(404).json({'status': '404 NOT FOUND', msg: 'PAGE NOT FOUND'})
 });
+
+ipc.connectTo(
+  'world',
+  socketPath,
+  connecting
+);
+
+function connecting(socket) {
+  ipc.of.world.on(
+    'connect',
+    function() {
+      ipc.of.world.emit(
+        'processlocationrequest',
+        { location: 'Example.Building:1:A'}
+      ); // send this every ~5 minutes
+
+      ipc.of.world.emit(
+        'tmpstoredatarequest',
+        { location: 'Example.Building:1:A', device: '1' }
+      ); // assuming each location has more than 1 device,
+      // use this to store that device data until processlocationrequest is done
+
+      ipc.disconnect('world');
+    }
+  );
+}
 
 process.on("uncaughtException", function(err) {
   console.log("Caught exception: " + err);
