@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.5.1",
     "node-ipc": "^9.1.1",
     "redis": "^2.8.0",
-    "socket.io": "^2.2.0",
+    "socket.io": "^2.5.0",
     "ws": "^7.1.2"
   }
 }
